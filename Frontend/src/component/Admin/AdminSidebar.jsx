@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { FaBoxOpen, FaClipboardList, FaSignOutAlt, FaStore, FaUser } from 'react-icons/fa'
+import { FaBoxOpen, FaClipboard, FaClipboardList, FaSignOutAlt, FaStore, FaUser } from 'react-icons/fa'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../Redux/Slices/authSlice';
 import { clearCart } from '../../Redux/Slices/cartSlice';
+import { FaCableCar } from 'react-icons/fa6';
 
 
 const AdminSidebar = () => {
@@ -40,6 +41,12 @@ const AdminSidebar = () => {
             ({isActive}) => isActive? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2" : "text-gray-300 hover:bg-gray-700 hover:text-white py-3 px-4 rounded flex items-center space-x-2"}>
             <FaClipboardList />
             <span>Orders</span>
+           </NavLink>
+
+           <NavLink to="/admin/scan-return" className={
+            ({isActive}) => isActive? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2" : "text-gray-300 hover:bg-gray-700 hover:text-white py-3 px-4 rounded flex items-center space-x-2"}>
+            <FaCableCar />
+            <span>QR Code Scanning</span>
            </NavLink>
 
            <NavLink to="/" className={

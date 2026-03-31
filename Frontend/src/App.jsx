@@ -21,6 +21,7 @@ import OrderManagement from './component/Admin/OrderManagement';
 import {Provider} from "react-redux";
 import store from "./Redux/store"
 import ProtectedRoute from './component/Common/ProtectedRoute';
+import ScanReturnPage from './pages/ScanReturnPage';
 
 
 const App = () => {
@@ -52,7 +53,8 @@ const App = () => {
       <Route path='users' element = {<UserManagement />} />    
       <Route path='products' element = {<ProductManagement />} />    
       <Route path='products/:id/edit' element = {<EditProductPage />} />    
-      <Route path='orders' element = {<OrderManagement />} />    
+      <Route path='orders' element = {<OrderManagement />} />  
+      <Route path='scan-return' element={<ScanReturnPage />} />  
     </Route>
    </Routes>
    </BrowserRouter>

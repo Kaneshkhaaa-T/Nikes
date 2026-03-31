@@ -41,6 +41,24 @@ export const fetchOrderDetails = createAsyncThunk(
     }
 );
 
+// Add this action
+export const verifyReturn = createAsyncThunk(
+  'order/verifyReturn',
+  async (scannedPayload, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      const { data } = await axios.post(
+        '/api/orders/verify-return',
+        { scannedPayload },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message);
+    }
+  }
+);
+
 
 const orderSlice = createSlice({
     name: "orders",

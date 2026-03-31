@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const orderItemSchema = new mongoose.Schema({
-    productId :{
+    productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
         required: true,
     },
-    name:{
+    name: {
         type: String,
         required: true,
     },
@@ -25,54 +25,77 @@ const orderItemSchema = new mongoose.Schema({
         required: true,
     },
 },
-{_id: false}
+{ _id: false }
 );
 
 const orderSchema = new mongoose.Schema({
-    user:{
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     orderItems: [orderItemSchema],
-    shippingAddress:{
-        address : {type: String, required: true},
-        city : {type: String, required: true},
-        postalCode : {type: String, required: true},
-        country : {type: String, required: true},
+    shippingAddress: {
+        address:    { type: String, required: true },
+        city:       { type: String, required: true },
+        postalCode: { type: String, required: true },
+        country:    { type: String, required: true },
     },
     paymentMethod: {
         type: String,
         required: true,
     },
-    totalPrice:{
+    totalPrice: {
         type: Number,
         required: true,
     },
-    isPaid:{
+    isPaid: {
         type: Boolean,
         default: false,
     },
-    paidAt:{
+    paidAt: {
         type: Date,
     },
-    isDelivered:{
+    isDelivered: {
         type: Boolean,
         default: false,
     },
-    deliveredAt:{
+    deliveredAt: {
         type: Date,
     },
-    paymentStatus:{
+    paymentStatus: {
         type: String,
         default: "pending",
     },
-    status:{
+    status: {
         type: String,
-        enum: ["Processing", "Shipped","Delivered","Cancelled"],
+        enum: ["Processing", "Shipped", "Delivered", "Cancelled"],
         default: "Processing",
     },
+
+    // ── QR Anti-counterfeit fields ──
+    qrSecretCode: {
+        type: String,
+        unique: true,
+        sparse: true,
+    },
+    qrCodeImage: {
+        type: String,
+    },
+    returnStatus: {
+        type: String,
+        enum: ["none", "requested", "approved", "rejected"],
+        default: "none",
+    },
+    returnVerifiedAt: {
+        type: Date,
+    },
+    returnRejectedReason: {
+        type: String,
+    },
+
 },
-{timestamps: true }
+{ timestamps: true }
 );
-module.exports = mongoose.model("order", orderSchema); 
+
+module.exports = mongoose.model("order", orderSchema);
