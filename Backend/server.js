@@ -19,29 +19,31 @@ const productRoutes = require("./routes/productRoutes");
 const app = express();
 app.use(express.json());
 
-// ✅ Fixed CORS — allow your frontend domains
+// ✅ Allow all vercel.app domains + localhost
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://nikes-seven.vercel.app",
-    /https:\/\/nikes-56s1-.*\.vercel\.app/,  // covers all preview deployments
+    "http://localhost:3000",
 ];
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.some(o =>
-            typeof o === "string" ? o === origin : o.test(origin)
-        )) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+
+        // ✅ Allow ALL vercel.app preview and production deployments
+        if (origin.endsWith(".vercel.app")) return callback(null, true);
+
+        // Allow localhost
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+
+        callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-// ✅ Handle preflight OPTIONS requests
+// ✅ Must be BEFORE all routes
 app.options("*", cors());
 
 const PORT = process.env.PORT || 3000;
